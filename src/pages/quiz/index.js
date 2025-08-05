@@ -22,7 +22,7 @@ const Quiz = () => {
 
   const [animation, setAnimation] = useState(false);
 
-  console.log(quizData, "q d");
+  // console.log(quizData, "q d");
 
   useEffect(() => {
     async function getQuizData() {
@@ -40,9 +40,10 @@ const Quiz = () => {
     }, 1000);
   }, []);
 
-  const isPlaying = true;
+  const [isPlaying,setIsPlaying] = useState( true);
   const [isUserSpeaking, setIsUserSpeaking] = useState(false);
   const [displayFullScreenImg, setDisplayFullScreenImg] = useState(false);
+  
 
   const toggleImage = () => {
     setDisplayFullScreenImg(!displayFullScreenImg);
@@ -63,7 +64,6 @@ const Quiz = () => {
       />
 
       {/* main */}
-
       <div className="relative z-10 w-[85%] h-full flex flex-col justify-between mx-auto pt-[5vh] pb-[7vh]">
         <div
           className={`flex flex-col gap6 gap-2
@@ -77,7 +77,7 @@ const Quiz = () => {
         >
           <nav className="w-full flex items-center justify-between ">
             <div className="flex gap-3 items-center ">
-              <Link className="cursor-pointer" href={"/"}>
+              <Link className="cursor-pointer" href={"/user-registration"}>
                 <ArrowLeft size={24} className="p-1" />
               </Link>
 
@@ -105,7 +105,7 @@ const Quiz = () => {
               </Link>
 
               <span
-                //onClick={toggleQuestionAudio}
+                onClick={()=>setIsPlaying(prev=>!prev)}
                 className=" rounded-full bg-white border-1 border-blue-slate"
               >
                 {!isPlaying ? (
