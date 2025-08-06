@@ -14,7 +14,6 @@
   --color-blue-slate: #4a7189;
   --color-steel-navy: #293e4c;
   --color-pale-sky: #c0dde9;
-
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,10 +23,8 @@
   }
 }
 
+
 body {
-  /* background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif; */
   background: linear-gradient(
     180deg,
     #4a7189 0%,
@@ -38,16 +35,4 @@ body {
     #83bdc1 91.83%,
     #4a7189 100%
   );
-
-  /* linear-gradient(
-    180deg,
-    #8dcdd2 0%,
-    #8dcdd2 9.13%,
-    #c0dde9 28.42%,
-    #d9f2f9 50%,
-    #cde3ed 72.04%,
-    #8dcdd2 91.83%,
-    #8dcdd2 100%
-  ); */
 }
-

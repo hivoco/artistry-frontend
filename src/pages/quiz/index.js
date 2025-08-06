@@ -40,10 +40,9 @@ const Quiz = () => {
     }, 1000);
   }, []);
 
-  const [isPlaying,setIsPlaying] = useState( true);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [isUserSpeaking, setIsUserSpeaking] = useState(false);
   const [displayFullScreenImg, setDisplayFullScreenImg] = useState(false);
-  
 
   const toggleImage = () => {
     setDisplayFullScreenImg(!displayFullScreenImg);
@@ -53,7 +52,13 @@ const Quiz = () => {
     setOptionSelected(index);
   };
   return (
-    <div className="relative w-full h-svh max-w-md mx-auto">
+    <div
+      style={{
+        height:
+          quizData[currentQuestionIndex]?.question_id === 8 ? "100%" : "100svh",
+      }}
+      className="relative w-full h-svh  max-w-md mx-auto "
+    >
       <Image
         className="w-full h-auto absolute top-0 left-0 right-0 pointer-events-none"
         src={"/images/top-image-quiz.png"}
@@ -105,7 +110,7 @@ const Quiz = () => {
               </Link>
 
               <span
-                onClick={()=>setIsPlaying(prev=>!prev)}
+                onClick={() => setIsPlaying((prev) => !prev)}
                 className=" rounded-full bg-white border-1 border-blue-slate"
               >
                 {!isPlaying ? (
@@ -129,7 +134,7 @@ const Quiz = () => {
         </div>
 
         <div
-          className={`mt-[5vh] w-full flex  gap-3 relative  outline-1 outline-white rounded-lg py7 py-6 px-3 font-medium text-sm textbase/5 text-steel-navy
+          className={`mt-[5vh] sm:mt-[4vh] w-full flex gap-3 relative  outline-1 outline-white rounded-lg py7 py-6 sm:py-5 px-3 font-medium text-sm textbase/5 text-steel-navy
            ${quizData[currentQuestionIndex]?.is_large ? "flex-col" : ""}
           ${animation ? "opacity-100 " : "opacity-0 "}
           transition-all duration-700 ease-in-out transform
@@ -146,11 +151,11 @@ const Quiz = () => {
               className={`relative h-auto ${
                 quizData[currentQuestionIndex]?.is_large
                   ? "w-full "
-                  : "rounded-lg w-full"
+                  : "rounded-lg max-w-full max-h-full"
               }`}
             >
               <Image
-                className={`w-full h-auto pointer-events-none  rounded-lg
+                className={`w-auto h-auto pointer-events-none  rounded-lg
                   ${quizData[currentQuestionIndex]?.is_large ? "" : ""}
                   `}
                 src={quizData[currentQuestionIndex]?.question_img}
@@ -170,7 +175,7 @@ const Quiz = () => {
 
         <div
           onClick={() => setIsUserSpeaking((prev) => !prev)}
-          className={`flex flex-col items-center pt-4 pb-1 ${
+          className={`flex flex-col items-center pt-4 pb-1 sm:p-1 ${
             isUserSpeaking ? "" : "gap-1"
           }
           ${animation ? "opacity-100 " : "opacity-0 "}

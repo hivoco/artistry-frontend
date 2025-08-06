@@ -22,7 +22,7 @@ const Home = () => {
     }, 1000);
   };
   return (
-    <div className="pt-16 pb-7 flex flex-col justify-between items-center h-svh">
+    <div className="pt-16 pb-7 flex flex-col justify-between items-center h-svh max-w-md mx-auto">
       <Header
         className={`transition-transform duration-700 ease-out ${
           animation ? "scale-100" : "scale-0"
@@ -39,6 +39,7 @@ const Home = () => {
       `}
       >
         <Image
+          className="w-auto h-auto max-w-full max-h-full object-contain"
           src={"/group-creams.png"}
           alt="logo"
           width={375}
@@ -48,15 +49,15 @@ const Home = () => {
 
         {animation <= 2 && (
           // <Link href={"/user-registration"}>
-            <ArrowRight
-              onClick={() => {
-                setAnimation(2);
-                handleClick();
-              }}
-              size={64}
-              strokeWidth={2}
-              className="border-1 border-black rounded-md p-3"
-            />
+          <ArrowRight
+            onClick={() => {
+              setAnimation(2);
+              handleClick();
+            }}
+            size={64}
+            strokeWidth={2}
+            className="border-1 border-black rounded-md p-3"
+          />
           // </Link>
         )}
       </div>

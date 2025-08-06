@@ -51,11 +51,11 @@ export default function UserRegistration() {
   }, []);
 
   return (
-    <div className="pt-16 pb-7 flex flex-col items-center h-svh">
+    <div className="pt-16 pb-7 flex flex-col items-center h-svh  max-w-md mx-auto">
       <Header />
 
       <div className="pt-7 pb-3 w-full h-full flex flex-col justify-between gap-3 items-center ">
-        <div className="w-full flex flex-col gap-16 items-center">
+        <div className="w-full flex flex-col gap-16 sm:gap-10 items-center">
           <FloweryImage
             className={`${
               animation ? "opacity-100 " : "opacity-0 "
