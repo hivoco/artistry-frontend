@@ -10,6 +10,7 @@ import {
   Mic,
   Volume2,
   VolumeOff,
+  X,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -103,7 +104,6 @@ const Quiz = () => {
       if (!response.ok) throw new Error("request failed");
       const data = await response.json();
       setResult(data);
-      console.log(data, "data 95");
 
       setUserResponseArray((prevArray) => [
         ...prevArray,
@@ -145,8 +145,7 @@ const Quiz = () => {
 
   const handleSkip = () => {
     if (quizData.length === currentQuestionIndex + 1) return;
-    if(currentQuestionIndex===9)return 
-    
+    if (currentQuestionIndex === 9) return;
 
     if (currentQuestionIndex < quizData.length - 1) {
       setOptionSelected(null);
@@ -463,7 +462,6 @@ const Quiz = () => {
                 `}
               >
                 {opt.text}
-
                 {Number(result?.correct_option_key) === index + 1 && (
                   <Check
                     size={16}
@@ -471,6 +469,17 @@ const Quiz = () => {
                     strokeWidth={2}
                   />
                 )}
+
+                {result &&
+                  optionSelected?.toLocaleLowerCase() ===
+                    opt?.text?.toLocaleLowerCase() &&
+                  Number(result?.correct_option_key) !== index + 1 && (
+                    <X
+                      className="text-white bg-red-600 rounded-full p-1"
+                      size={16}
+                      strokeWidth={2}
+                    />
+                  )}
               </div>
             );
           })}

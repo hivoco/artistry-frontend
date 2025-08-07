@@ -12,7 +12,6 @@ const Timer = ({
     const intervalId = setInterval(() => {
       setSeconds((prevSeconds) => (prevSeconds > 0 ? prevSeconds - 1 : 0.0));
     }, 1000);
-
     return () => clearInterval(intervalId);
   }, []);
 

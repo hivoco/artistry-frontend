@@ -17,6 +17,8 @@ const Chloe = localFont({
 
 const Leaderboard = () => {
   // const [name, setName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const searchParams = useSearchParams();
   const session_id = searchParams.get("session") || "";
   const name = searchParams.get("name") || "";
@@ -26,7 +28,7 @@ const Leaderboard = () => {
   const [leaderboardList, setLeaderboardList] = useState([]);
 
   const getInfo = () => {
-    // setIsLoading(true);
+    setIsLoading(true);
     fetch(BASE_URL + `/get_top5?session_id=${session_id}&name=${name}`)
       .then((response) => {
         if (!response.ok) {
@@ -37,13 +39,12 @@ const Leaderboard = () => {
       .then((data) => {
         console.log("Success:", data);
 
-        // setIsLoading(false);
+        setIsLoading(false);
         setLeaderboardList(data?.top_5);
-        // setLeaderboardList(data?.top_5?.slice(1));
       })
       .catch((error) => {
         console.error("Error:", error);
-        // setIsLoading(false);
+        setIsLoading(false);
         // setIsRoomExists(null); // Reset on error
       });
   };
@@ -60,6 +61,11 @@ const Leaderboard = () => {
       router.replace("/");
     }
   }, [name, session_id, router.isReady]);
+
+  if (isLoading) {
+    return null
+    // return <h1>Loading ...</h1>;
+  }
 
   return (
     <div
