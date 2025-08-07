@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import localFont from "next/font/local";
 import Header from "@/components/Header";
 import Image from "next/image";
+import { BASE_URL } from "../../../constant";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 const Chloe = localFont({
   src: [
     {
@@ -13,12 +16,50 @@ const Chloe = localFont({
 });
 
 const Leaderboard = () => {
-  const leaderboard = [
-    { rank: "4th", name: "Vidhaan099", points: 70 },
-    { rank: "5th", name: "Aditi119", points: 60 },
-    { rank: "6th", name: "Shruti108", points: 50 },
-    { rank: "7th", name: "Ayush111", points: 40 },
-  ];
+  // const [name, setName] = useState("");
+  const searchParams = useSearchParams();
+  const session_id = searchParams.get("session") || "";
+  const name = searchParams.get("name") || "";
+
+  const router = useRouter();
+
+  const [leaderboardList, setLeaderboardList] = useState([]);
+
+  const getInfo = () => {
+    // setIsLoading(true);
+    fetch(BASE_URL + `/get_top5?session_id=${session_id}&name=${name}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json(); // Return the promise for the next then
+      })
+      .then((data) => {
+        console.log("Success:", data);
+
+        // setIsLoading(false);
+        setLeaderboardList(data?.top_5);
+        // setLeaderboardList(data?.top_5?.slice(1));
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        // setIsLoading(false);
+        // setIsRoomExists(null); // Reset on error
+      });
+  };
+
+  useEffect(() => {
+    // setName(name);
+    if (!router.isReady) return;
+
+    if (session_id || name) {
+      getInfo();
+    }
+
+    if (!session_id && !name) {
+      router.replace("/");
+    }
+  }, [name, session_id, router.isReady]);
 
   return (
     <div
@@ -66,7 +107,7 @@ const Leaderboard = () => {
           <h3
             className={`${Chloe.className} absolute bottom-0 left-1/2 -translate-x-1/2 font-normal text-lg text-center text-jetblack-25`}
           >
-            Ayushi101
+            {leaderboardList[0]?.name}
           </h3>
         </div>
 
@@ -82,7 +123,7 @@ const Leaderboard = () => {
             <h3
               className={`${Chloe.className} absolute bottom-0 left-1/2 -translate-x-1/2 font-normal text-lg text-center text-jetblack-25`}
             >
-              Siya100
+              {leaderboardList[1]?.name}
             </h3>
           </div>
 
@@ -97,26 +138,29 @@ const Leaderboard = () => {
             <h3
               className={`${Chloe.className} absolute bottom-0 left-1/2 -translate-x-1/2 font-normal text-lg text-center text-jetblack-25`}
             >
-              Yash087
+              {leaderboardList[2]?.name}
             </h3>
           </div>
         </div>
       </div>
 
       <div className="mt-2 w-full h-[28vh] flex flex-col gap-y-1.5">
-        {leaderboard?.map((user, index) => (
+        {leaderboardList.slice(3)?.map((user, index) => (
           <div
             key={index}
             className="flex flex-1 text-jetblack-25 justify-between items-center w-full font-medium text-base/4.5 px-5 py-3 rounded-lg outline-1 outline-blue-slate"
           >
-            <span className="">{user.rank}</span>
-            <span className=" ml-4 mr-auto">{user.name}</span>
-            <span className="">Pts.{user.points}</span>
+            <span className="">{user?.rank}</span>
+            <span className=" ml-4 mr-auto">{user?.name}</span>
+            <span className="">Pts.{user?.score}</span>
           </div>
         ))}
       </div>
 
-      <button className="mt-2 w-full  bg-blue-slate  text-white font-bold text-lg/5.5  py-3 text-center rounded-lg outline-1 outline-white hover:bg-[#3a6176] transition">
+      <button
+        onClick={() => window.open("/pdf/certificate.pdf", "_blank")}
+        className="mt-2 w-full  bg-blue-slate  text-white font-bold text-lg/5.5  py-3 text-center rounded-lg outline-1 outline-white hover:bg-[#3a6176] transition"
+      >
         Download Your Certificate
       </button>
     </div>

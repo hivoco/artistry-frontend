@@ -2,29 +2,55 @@ import FloweryImage from "@/components/FloweryImage";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { ArrowRight, Check, CircleCheck } from "lucide-react";
-import { useEffect, useState } from "react";
-import { languages } from "../../../constant";
+import { useEffect, useMemo, useState } from "react";
+import { BASE_URL, languages } from "../../../constant";
 import Link from "next/link";
-
-// 3 index json
-// ,
-//                 {
-//                     "image_url": null,
-//                     "key": "option5",
-//                     "text": "Acerola Cherry"
-//                 }
+import { useCallback } from "react";
 
 export default function UserRegistration() {
   const [tab, setTab] = useState(1);
-  const [name, setName] = useState("");
   const [language, setLanguage] = useState("");
+  const [userID, setUserID] = useState("");
 
   const [animation, setAnimation] = useState(false);
 
   const [animationNumber, setAnimationNumber] = useState(0);
+  const [name, setName] = useState("");
+
+  function debounce(fn, delay) {
+    let timer;
+    return (...args) => {
+      // args of the fn above
+      // args an array ["ranjan"]
+      // ..args filling () with array elements ,"ranjan"
+      clearTimeout(timer);
+      timer = setTimeout(() => fn(...args), delay);
+    };
+  }
+
+  const getUserName = async (val) => {
+    try {
+      const response = await fetch(BASE_URL + "/api/is_user_exit?name=" + val);
+      if (!response.ok) throw new Error("request failed");
+      const data = await response.json();
+      setUserID(data?.unique_user_id);
+      sessionStorage.setItem("userID", data?.unique_user_id);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const debouncedLog = useMemo(() => debounce(getUserName, 1000), []);
 
   const handleChange = (e) => {
-    setName(e.target.value);
+    const val = e.target.value;
+    setName(val);
+    if (!val.trim() || !val) {
+      setUserID("");
+      console.log("empty input");
+      return;
+    }
+    debouncedLog(val);
   };
 
   useEffect(() => {
@@ -97,13 +123,13 @@ export default function UserRegistration() {
 
                 <p
                   className={`text-center text-sm leading-4 mt-2 uppercase ${
-                    name
+                    userID
                       ? "font-semibold flex items-center justify-center gap-2 opacity-100"
                       : "font-light "
                   } transition-all duration-1000 ease-in-out transform`}
                 >
-                  {name ? name.toUpperCase() : "UNIQUE ID"}
-                  {name && (
+                  {userID || "UNIQUE ID"}
+                  {userID && (
                     <span>
                       <CircleCheck size={16} color="#06B300" strokeWidth={1} />
                     </span>
@@ -146,7 +172,10 @@ export default function UserRegistration() {
         {name && tab === 1 && (
           //   <Link href={"/select-language"}>
           <ArrowRight
-            onClick={() => setTab(2)}
+            onClick={() => {
+              sessionStorage.setItem("name",name);
+              userID && setTab(2);
+            }}
             size={64}
             strokeWidth={1}
             className={`border-1 border-jetblack-25 rounded-md p-3
@@ -163,7 +192,7 @@ export default function UserRegistration() {
 
         {tab === 2 && (
           <Link
-            href={language ? "/quiz" : "#"}
+            href={language ? `/quiz?lang=${language}` : "#"}
             className={`w-4/5 outline-1 outline-white rounded-lg  ${
               language
                 ? "bg-blue-slate text-white"
