@@ -48,7 +48,7 @@ const Quiz = () => {
     async function getQuizData() {
       try {
         const response = await fetch(
-          BASE_URL + "/api/get_all_question?lang=english"
+          BASE_URL + "/api/get_all_question?lang=" + language
         );
         if (!response.ok) throw new Error("Request failed");
         const data = await response.json();
@@ -58,8 +58,12 @@ const Quiz = () => {
       }
     }
 
-    getQuizData();
+    if (language) {
+      getQuizData();
+    }
+  }, [language]);
 
+  useEffect(() => {
     setTimeout(() => {
       setAnimation(true);
     }, 1000);
@@ -140,17 +144,15 @@ const Quiz = () => {
   };
 
   const handleSkip = () => {
-    if (quizData.length === currentQuestionIndex + 1) return; //skip
+    if (quizData.length === currentQuestionIndex + 1) return;
+    if(currentQuestionIndex===9)return 
+    
 
-    // if (recording) return;
-    // if (audio) {
-    //   audio.pause();
-    // }
     if (currentQuestionIndex < quizData.length - 1) {
+      setOptionSelected(null);
       setSeconds(30);
       // resetState();
       // setIsPlaying(false);
-      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
       goToNextQuestion();
     }
   };
@@ -161,8 +163,8 @@ const Quiz = () => {
     if (quizData.length === currentQuestionIndex) return;
 
     if (currentQuestionIndex < quizData.length - 1) {
-      console.log('no this called');
-      
+      console.log("no this called");
+
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     } else {
       console.log("completeQuiz called by go to next");
@@ -172,10 +174,13 @@ const Quiz = () => {
 
   const handleSubmit = () => {
     if (quizData.length === currentQuestionIndex) return;
+
     if (optionSelected) {
       // if (audio) {
       //   audio.pause();
       // }
+      setOptionSelected(null);
+
       setSeconds(30);
       goToNextQuestion();
     }
@@ -184,14 +189,14 @@ const Quiz = () => {
   const insertRecord = async () => {
     try {
       // setIsLoading(true);
-      const name = sessionStorage.getItem("name");
+      // const name = sessionStorage.getItem("name");
       const response = await fetch(BASE_URL + "/api/insert_record", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name,
+          name: userID,
           session_id: sessionID,
           quiz: userResponseArray,
         }),
@@ -200,7 +205,7 @@ const Quiz = () => {
       await response.json();
 
       setTimeout(() => {
-        router.push(`/leaderboard?session_id=${sessionID}&name=${name}`);
+        router.push(`/leaderboard?session_id=${sessionID}&name=${userID}`);
       }, 150);
     } catch (error) {
       // setIsLoading(false);
@@ -447,7 +452,7 @@ const Quiz = () => {
                   });
                 }}
                 className={`outline-1 outline-white  overflow-x-auto rounded-lg py5 py-3 px-2.5 text-steel-navy flex items-center justify-between text-xs textsm/4 font-medium
-                  active:bg-[#83BDC180]
+                  ${optionSelected === opt.text ? " bg-[#83BDC180]" : ""}
                   ${result ? "pointer-events-none" : "pointer-events-auto"}
               ${
                 animation
@@ -480,7 +485,6 @@ const Quiz = () => {
           <button
             onClick={() => {
               if (currentQuestionIndex === 9) return;
-              setOptionSelected(null);
               setResult(null);
               handleSkip();
             }}
@@ -492,7 +496,6 @@ const Quiz = () => {
           </button>
 
           <button
-
             onClick={() => {
               // if (currentQuestionIndex === 9) return;
               setOptionSelected(null);

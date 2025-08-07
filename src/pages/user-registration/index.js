@@ -20,9 +20,6 @@ export default function UserRegistration() {
   function debounce(fn, delay) {
     let timer;
     return (...args) => {
-      // args of the fn above
-      // args an array ["ranjan"]
-      // ..args filling () with array elements ,"ranjan"
       clearTimeout(timer);
       timer = setTimeout(() => fn(...args), delay);
     };
@@ -173,7 +170,7 @@ export default function UserRegistration() {
           //   <Link href={"/select-language"}>
           <ArrowRight
             onClick={() => {
-              sessionStorage.setItem("name",name);
+              sessionStorage.setItem("name", name);
               userID && setTab(2);
             }}
             size={64}

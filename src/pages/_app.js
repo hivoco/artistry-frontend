@@ -11,6 +11,15 @@ export default function App({ Component, pageProps }) {
       <Head>
         <title>Artistry Skin Nutrition</title>
         <meta name="description" content="Gaming Quiz for Amway ABOs" />
+
+        <meta property="og:title" content="Artistry Skin Nutrition" />
+        <meta property="og:description" content="Gaming Quiz for Amway ABOs" />
+        <meta
+          property="og:image"
+          content="/artistry-logo.png"
+        />
+        <meta property="og:type" content="website" />
+        {/* <meta property="og:url" content="https://yourdomain.com" /> */}
       </Head>
 
       <main className={`inter.className `}>

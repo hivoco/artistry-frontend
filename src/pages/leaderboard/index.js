@@ -99,31 +99,31 @@ const Leaderboard = () => {
           <Image
             src={"/images/1st.png"}
             alt="1st medal"
-            width={120}
-            height={120}
+            width={130}
+            height={130}
             priority={true}
           />
 
           <h3
             className={`${Chloe.className} absolute bottom-0 left-1/2 -translate-x-1/2 font-normal text-lg text-center text-jetblack-25`}
           >
-            {leaderboardList[0]?.name}
+            {leaderboardList[0]?.name || "null"}
           </h3>
         </div>
 
-        <div className="flex items-center justify-between -mt-5">
+        <div className="flex items-center justify-between -mt-8">
           <div className="relative">
             <Image
               src={"/images/2nd.png"}
               alt="1st medal"
-              width={120}
-              height={120}
+              width={130}
+              height={130}
             />
 
             <h3
               className={`${Chloe.className} absolute bottom-0 left-1/2 -translate-x-1/2 font-normal text-lg text-center text-jetblack-25`}
             >
-              {leaderboardList[1]?.name}
+              {leaderboardList[1]?.name || "null"}
             </h3>
           </div>
 
@@ -131,14 +131,14 @@ const Leaderboard = () => {
             <Image
               src={"/images/3rd.png"}
               alt="1st medal"
-              width={120}
-              height={120}
+              width={130}
+              height={130}
             />
 
             <h3
               className={`${Chloe.className} absolute bottom-0 left-1/2 -translate-x-1/2 font-normal text-lg text-center text-jetblack-25`}
             >
-              {leaderboardList[2]?.name}
+              {leaderboardList[2]?.name || "null"}
             </h3>
           </div>
         </div>
@@ -148,7 +148,7 @@ const Leaderboard = () => {
         {leaderboardList.slice(3)?.map((user, index) => (
           <div
             key={index}
-            className="flex flex-1 text-jetblack-25 justify-between items-center w-full font-medium text-base/4.5 px-5 py-3 rounded-lg outline-1 outline-blue-slate"
+            className="flex  text-jetblack-25 justify-between items-center w-full font-medium text-base/4.5 px-5 py-3 rounded-lg outline-1 outline-blue-slate"
           >
             <span className="">{user?.rank}</span>
             <span className=" ml-4 mr-auto">{user?.name}</span>
