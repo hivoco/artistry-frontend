@@ -444,7 +444,7 @@ const Quiz = () => {
                         />
                       )}
 
-                    <p className="absolute left-3 bottom-2 whitespace-nowrap text-sm/4 font-normal text-white capitalize flex items-center gap-2">
+                    <p className="absolute left-3 bottom-2  text-sm/4 font-normal text-white capitalize flex items-center gap-2">
                       {img?.text}
                     </p>
                   </div>
