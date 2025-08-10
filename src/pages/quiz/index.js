@@ -32,10 +32,9 @@ const Quiz = () => {
   const [seconds, setSeconds] = useState(30);
   const [sessionID, setSessionID] = useState("");
 
-    const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [isUserSpeaking, setIsUserSpeaking] = useState(false);
   const [displayFullScreenImg, setDisplayFullScreenImg] = useState(false);
-
 
   const router = useRouter();
   const [correctAnsNum, setCorrectAnsNum] = useState(0);
@@ -124,7 +123,6 @@ const Quiz = () => {
       console.log(err);
     }
   };
-
 
   const toggleImage = () => {
     setDisplayFullScreenImg(!displayFullScreenImg);
@@ -218,8 +216,12 @@ const Quiz = () => {
     } catch (error) {
       // setIsLoading(false);
       console.error("Error inserting record:", error);
+      // setTimeout(() => {
+      //   router.push("/leaderboard");
+      // }, 150);
+
       setTimeout(() => {
-        router.push("/leaderboard");
+        router.push(`/criteria?name=${userID}&correctAnsNum=${correctAnsNum}`);
       }, 150);
     }
   };

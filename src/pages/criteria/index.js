@@ -10,6 +10,7 @@ const Criteria = () => {
   const [loading, setLoading] = useState(true);
   const [sessionID, setSessionID] = useState("");
   const [userID, setUserID] = useState("");
+  const [playGif, setPlayGif] = useState(true);
 
   const router = useRouter();
   useEffect(() => {
@@ -23,6 +24,15 @@ const Criteria = () => {
       setSessionID(session_id || "");
     }
   }, [router.isReady]);
+
+  useEffect(() => {
+    if (passed) {
+      const id = setTimeout(() => {
+        setPlayGif(false);
+      }, 4000);
+      return () => clearTimeout(id);
+    }
+  }, [passed]);
 
   if (loading) {
     return null;
@@ -53,9 +63,10 @@ const Criteria = () => {
           <h2 className="font-bold text-4xl/10 text-steel-navy  ">
             You scored {percent}%
           </h2>
-          {passed && (
+          {passed && playGif && (
             <>
               <Image
+                loop={false}
                 className="absolute left-0 w-full h-full object-cover"
                 src={"/gifs/confetti.gif"}
                 width={375}
@@ -98,10 +109,7 @@ const Criteria = () => {
               *View the leaderboard to download your certificate.{" "}
             </p>
 
-            <Link
-              className="w-full"
-              href={`/leaderboard?&name=${userID}`}
-            >
+            <Link className="w-full" href={`/leaderboard?&name=${userID}`}>
               <button className=" w-full  bg-blue-slate  text-white font-bold text-lg/5.5  py-3 text-center rounded-lg outline-1 outline-white hover:bg-[#3a6176] transition">
                 View Leaderboard{" "}
               </button>

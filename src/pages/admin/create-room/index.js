@@ -209,10 +209,10 @@ const RoomCreator = () => {
           </button>
 
           {roomUrl && sessionCreated && (
-            <div className="mt-4 p-4 bg-white/80 rounded-lg border border-dark-green/20">
+            <div className="mt-4 p-2 bg-white/80 rounded-lg border border-dark-green/20">
               <div className="flex items-center justify-center mb-2">
-                <CircleCheck size={20} className="text-dark-green mr-2" />
-                <p className="text-dark-green font-medium">
+                <CircleCheck size={20} className="text-dark-green" />
+                <p className="text-dark-green font-medium ml-1">
                    session created successfully!
                 </p>
               </div>
@@ -221,7 +221,7 @@ const RoomCreator = () => {
                   type="text"
                   readOnly
                   value={roomUrl}
-                  className="flex-1 outline-none text-gray-800 pr-2 overflow-x-auto bg-transparent"
+                  className="flex-1 w-4/5 outline-none text-gray-800 pr-2 overflow-x-auto whitespace-nowrap bg-transparent"
                 />
                 <button
                   onClick={copyToClipboard}
