@@ -21,7 +21,7 @@ import { useRouter } from "next/router";
 import Timer from "@/components/Timer";
 
 const Quiz = () => {
-  const [quizData, setQuizData] = useState(false);
+  const [quizData, setQuizData] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [optionSelected, setOptionSelected] = useState(null);
   const [userResponseArray, setUserResponseArray] = useState([]);
@@ -35,13 +35,15 @@ const Quiz = () => {
   const [sessionID, setSessionID] = useState("");
 
   const router = useRouter();
+  const [correctAnsNum, setCorrectAnsNum] = useState(0);
 
   useEffect(() => {
     if (router.isReady) {
-      const lang = searchParams.get("lang");
-      const session_id = searchParams.get("session") || "";
+      // const lang = searchParams.get("lang");
+      // const session_id = searchParams.get("session") || "";
+      const {lang,session_id}=router.query
       setLanguage(lang);
-      setSessionID(session_id);
+      setSessionID(session_id || "");
     }
   }, [router]);
 
@@ -103,6 +105,7 @@ const Quiz = () => {
 
       if (!response.ok) throw new Error("request failed");
       const data = await response.json();
+      data?.is_correct && setCorrectAnsNum((prev) => prev + 1);
       setResult(data);
 
       setUserResponseArray((prevArray) => [
@@ -174,18 +177,24 @@ const Quiz = () => {
   const handleSubmit = () => {
     if (quizData.length === currentQuestionIndex) return;
 
-    if (optionSelected) {
-      // if (audio) {
-      //   audio.pause();
-      // }
-      setOptionSelected(null);
+    // if (optionSelected) {
+    // if (audio) {
+    //   audio.pause();
+    // }
+    setOptionSelected(null);
+    console.log("handleSubmit called");
 
-      setSeconds(30);
-      goToNextQuestion();
-    }
+    setResult(null);
+
+    setSeconds(30);
+    goToNextQuestion();
+    // }
   };
 
+  console.log(userResponseArray, "user response array");
+
   const insertRecord = async () => {
+    // sessionStorage.setItem("correctAnsNum", correctAnsNum);
     try {
       // setIsLoading(true);
       // const name = sessionStorage.getItem("name");
@@ -204,7 +213,8 @@ const Quiz = () => {
       await response.json();
 
       setTimeout(() => {
-        router.push(`/leaderboard?session_id=${sessionID}&name=${userID}`);
+        router.push(`/criteria?name=${userID}&correctAnsNum=${correctAnsNum}`);
+        // router.push(`/leaderboard?session_id=${sessionID}&name=${userID}`);
       }, 150);
     } catch (error) {
       // setIsLoading(false);
@@ -311,7 +321,8 @@ const Quiz = () => {
           <span className="absolute left-1/2 -translate-x-1/2  top-0 -translate-y-1/2 bg-pale-sky outline-1 outline-white shadow-[0px_3.2px_3.2px_0px_#0000001F] rounded-full text-[11px] leading-[11px] font-semibold text-center size-8.5 p-1 flex items-center justify-center">
             {/* 00:30 */}
             <Timer
-              onTimeout={handleSkip}
+              // onTimeout={handleSkip}
+              onTimeout={handleSubmit}
               seconds={seconds}
               setSeconds={setSeconds}
               index={currentQuestionIndex}
@@ -377,13 +388,13 @@ const Quiz = () => {
         </div> */}
 
         <div
-          className={`flex flex-col gap-y-2 w-full 
+          className={`flex flex-col gap-y-2 
           ${animation ? "opacity-100 " : "opacity-0 "}
           transition-all duration-700 ease-in-out transform
           `}
         >
-          <div className="flex items-center gap-2 justify-between w-full">
-            {quizData[currentQuestionIndex]?.options.map((img, index) => {
+          <div className="flex flex-col gap-2 ">
+            {quizData[currentQuestionIndex]?.options?.map((img, index) => {
               if (img?.image_url) {
                 return (
                   <div
@@ -399,12 +410,12 @@ const Quiz = () => {
                       });
                       setOptionSelected(img?.text);
                     }}
-                    className="relative w-full rounded-lg outline-1 outline-jetblack-25"
+                    className={`relative w-fit rounded-lg outline-1 outline-jetblack-25 ${optionSelected?"pointer-events-none":"pointer-events-auto"}`}
                     key={index}
                   >
                     <Image
                       src={img?.image_url}
-                      className={`w-full h-full object-cover aspect-[1/1]`}
+                      className={` object-cover aspect-[1/1]`}
                       alt="icon"
                       width={130}
                       height={130}
@@ -416,25 +427,28 @@ const Quiz = () => {
                           "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(140, 140, 140, 0) 45.19%, #252525 88.94%)",
                       }}
                     />
-                    <p className="absolute left-3 bottom-2 whitespace-nowrap text-sm/4 font-normal text-white capitalize">
+
+                    {result &&
+                      optionSelected?.toLocaleLowerCase() ===
+                        img?.text?.toLocaleLowerCase() &&
+                      Number(result?.correct_option_key) !== index + 1 && (
+                        <X
+                          className="text-white bg-red-600 rounded-full p-1 absolute right-2 top-2"
+                          size={16}
+                          strokeWidth={2}
+                        />
+                      )}
+
+                    <p className="absolute left-3 bottom-2 whitespace-nowrap text-sm/4 font-normal text-white capitalize flex items-center gap-2">
                       {img?.text}
                     </p>
-
-                    {img?.text?.toLowerCase() ===
-                      result?.correct_option_value?.toLowerCase() && (
-                      <Check
-                        size={16}
-                        className="text-white bg-blue-slate rounded-full p-1"
-                        strokeWidth={2}
-                      />
-                    )}
                   </div>
                 );
               }
             })}
           </div>
 
-          {quizData[currentQuestionIndex]?.options.map((opt, index) => {
+          {quizData[currentQuestionIndex]?.options?.map((opt, index) => {
             if (opt?.image_url) return;
             return (
               <div
@@ -491,7 +505,7 @@ const Quiz = () => {
           transition-all duration-700 ease-out transform
           `}
         >
-          <button
+          {/* <button
             onClick={() => {
               if (currentQuestionIndex === 9) return;
               setResult(null);
@@ -516,6 +530,26 @@ const Quiz = () => {
             }
           >
             submit
+          </button> */}
+
+          <button
+            onClick={() => {
+              setOptionSelected(null);
+              setResult(null);
+              handleSubmit();
+            }}
+            disabled={!optionSelected}
+            className={`mt-2 w-full  bg-blue-slate  text-white font-bold text-lg/5.5  py-3 text-center rounded-lg outline-1 outline-white hover:bg-[#3a6176] transition
+              disabled:bg-pale-sky/70 disabled:text-steel-navy
+                      ${
+                        animation
+                          ? "opacity-100 translate-y-0"
+                          : "opacity-0 translate-y-10"
+                      }
+                  transition-all duration-700 ease-out transform
+              `}
+          >
+            Next
           </button>
         </div>
       </div>

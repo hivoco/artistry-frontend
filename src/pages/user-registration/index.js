@@ -5,7 +5,6 @@ import { ArrowRight, Check, CircleCheck } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { BASE_URL, languages } from "../../../constant";
 import Link from "next/link";
-import { useCallback } from "react";
 
 export default function UserRegistration() {
   const [tab, setTab] = useState(1);
@@ -37,7 +36,7 @@ export default function UserRegistration() {
     }
   };
 
-  const debouncedLog = useMemo(() => debounce(getUserName, 1000), []);
+  const debouncedLog = useMemo(() => debounce(getUserName, 1000),[]);
 
   const handleChange = (e) => {
     const val = e.target.value;
@@ -52,17 +51,25 @@ export default function UserRegistration() {
 
   useEffect(() => {
     if (name && animationNumber === 0) {
-      setTimeout(() => {
+      const id = setTimeout(() => {
         setAnimationNumber(1);
       }, 500);
+
+      return () => {
+        clearTimeout(id);
+      };
     }
-  }, [name]);
+  }, [name, animationNumber]);
 
   useEffect(() => {
     if (tab === 2) {
-      setTimeout(() => {
+      const id = setTimeout(() => {
         setAnimationNumber(2);
       }, 500);
+
+      return () => {
+        clearTimeout(id);
+      };
     }
   }, [tab]);
 

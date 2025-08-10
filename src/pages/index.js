@@ -1,8 +1,7 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import { ArrowRight, SquareArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
