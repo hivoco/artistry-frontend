@@ -16,7 +16,6 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../../constant";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import Timer from "@/components/Timer";
 
@@ -31,21 +30,23 @@ const Quiz = () => {
   const [language, setLanguage] = useState("");
   const [userID, setUserID] = useState("");
   const [seconds, setSeconds] = useState(30);
-  const searchParams = useSearchParams();
   const [sessionID, setSessionID] = useState("");
+
+    const [isPlaying, setIsPlaying] = useState(true);
+  const [isUserSpeaking, setIsUserSpeaking] = useState(false);
+  const [displayFullScreenImg, setDisplayFullScreenImg] = useState(false);
+
 
   const router = useRouter();
   const [correctAnsNum, setCorrectAnsNum] = useState(0);
 
   useEffect(() => {
     if (router.isReady) {
-      // const lang = searchParams.get("lang");
-      // const session_id = searchParams.get("session") || "";
-      const {lang,session_id}=router.query
+      const { lang, session } = router.query;
       setLanguage(lang);
-      setSessionID(session_id || "");
+      setSessionID(session || "");
     }
-  }, [router]);
+  }, [router.isReady]);
 
   useEffect(() => {
     async function getQuizData() {
@@ -67,9 +68,10 @@ const Quiz = () => {
   }, [language]);
 
   useEffect(() => {
-    setTimeout(() => {
+    const id = setTimeout(() => {
       setAnimation(true);
     }, 1000);
+    return () => clearTimeout(id);
   }, []);
 
   const verifyAnswer = async ({
@@ -123,9 +125,6 @@ const Quiz = () => {
     }
   };
 
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [isUserSpeaking, setIsUserSpeaking] = useState(false);
-  const [displayFullScreenImg, setDisplayFullScreenImg] = useState(false);
 
   const toggleImage = () => {
     setDisplayFullScreenImg(!displayFullScreenImg);
@@ -393,7 +392,7 @@ const Quiz = () => {
           transition-all duration-700 ease-in-out transform
           `}
         >
-          <div className="flex flex-col gap-2 ">
+          <div className="flex flex-col gap-2 mt-2">
             {quizData[currentQuestionIndex]?.options?.map((img, index) => {
               if (img?.image_url) {
                 return (
@@ -410,7 +409,11 @@ const Quiz = () => {
                       });
                       setOptionSelected(img?.text);
                     }}
-                    className={`relative w-fit rounded-lg outline-1 outline-jetblack-25 ${optionSelected?"pointer-events-none":"pointer-events-auto"}`}
+                    className={`relative w-fit rounded-lg outline-1 outline-jetblack-25 ${
+                      optionSelected
+                        ? "pointer-events-none"
+                        : "pointer-events-auto"
+                    }`}
                     key={index}
                   >
                     <Image

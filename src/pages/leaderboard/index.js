@@ -3,7 +3,6 @@ import localFont from "next/font/local";
 import Header from "@/components/Header";
 import Image from "next/image";
 import { BASE_URL } from "../../../constant";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 const Chloe = localFont({
   src: [
@@ -16,20 +15,15 @@ const Chloe = localFont({
 });
 
 const Leaderboard = () => {
-  // const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  const searchParams = useSearchParams();
-  const session_id = searchParams.get("session") || "";
-  const name = searchParams.get("name") || "";
 
   const router = useRouter();
 
   const [leaderboardList, setLeaderboardList] = useState([]);
 
-  const getInfo = () => {
+  const getInfo = async(sessionID, name) => {
     setIsLoading(true);
-    fetch(BASE_URL + `/get_top5?session_id=${session_id}&name=${name}`)
+    fetch(BASE_URL + `/get_top5?session_id=${sessionID}&name=${name}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -50,20 +44,19 @@ const Leaderboard = () => {
   };
 
   useEffect(() => {
-    // setName(name);
     if (!router.isReady) return;
+    const { name, session } = router.query;
 
-    if (session_id || name) {
-      getInfo();
-    }
-
-    if (!session_id && !name) {
+    if (!session && !name) {
       router.replace("/");
+      return;
     }
-  }, [name, session_id, router.isReady]);
+
+    getInfo(session || "", name);
+  }, [router.isReady]);
 
   if (isLoading) {
-    return null
+    return null;
     // return <h1>Loading ...</h1>;
   }
 

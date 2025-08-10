@@ -1,7 +1,6 @@
 import Header from "@/components/Header";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
@@ -12,23 +11,18 @@ const Criteria = () => {
   const [sessionID, setSessionID] = useState("");
   const [userID, setUserID] = useState("");
 
-  const searchParams = useSearchParams();
   const router = useRouter();
   useEffect(() => {
     if (router.isReady) {
-      const correctAnsNum = searchParams.get("correctAnsNum");
-      const result = correctAnsNum * 10;
+      const { correctAnsNum, name, session_id } = router.query;
+      const result = Number(correctAnsNum) * 10;
       setPercent(result);
       setPassed(result >= 60 ? true : false);
       setLoading(false);
-
-      const id = searchParams.get("name");
-      setUserID(id);
-
-      const sId = searchParams.get("session_id") || "";
-      setSessionID(sId);
+      setUserID(name || "");
+      setSessionID(session_id || "");
     }
-  }, [router]);
+  }, [router.isReady]);
 
   if (loading) {
     return null;
@@ -53,7 +47,7 @@ const Criteria = () => {
             src={passed ? "/images/tick.png" : "/images/cross.png"}
             width={70}
             height={70}
-            alt={"icon" + true ? "right" : "wrong"}
+            alt={passed ? "right" : "wrong"}
             priority={true}
           />
           <h2 className="font-bold text-4xl/10 text-steel-navy  ">
@@ -106,7 +100,7 @@ const Criteria = () => {
 
             <Link
               className="w-full"
-              href={`/leaderboard?session_id=${sessionID}&name=${userID}`}
+              href={`/leaderboard?&name=${userID}`}
             >
               <button className=" w-full  bg-blue-slate  text-white font-bold text-lg/5.5  py-3 text-center rounded-lg outline-1 outline-white hover:bg-[#3a6176] transition">
                 View Leaderboard{" "}
