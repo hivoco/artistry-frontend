@@ -21,7 +21,7 @@ const Leaderboard = () => {
 
   const [leaderboardList, setLeaderboardList] = useState([]);
 
-  const getInfo = async(sessionID, name) => {
+  const getInfo = async (sessionID, name) => {
     setIsLoading(true);
     fetch(BASE_URL + `/get_top5?session_id=${sessionID}&name=${name}`)
       .then((response) => {
@@ -62,7 +62,7 @@ const Leaderboard = () => {
 
   return (
     <div
-      className={`h-svh pt-16 pb-7  flex flex-col justify-between  items-center px-6 max-w-md mx-auto`}
+      className={`h-svh sm:min-h-svh sm:h-full pt-16 pb-7  flex flex-col justify-between  items-center px-6 max-w-md mx-auto`}
     >
       <Header />
 
@@ -96,6 +96,7 @@ const Leaderboard = () => {
       <div className="flex flex-col w-full">
         <div className="relative flex justify-center">
           <Image
+            className="size-30"
             src={"/images/1st.png"}
             alt="1st medal"
             width={130}
@@ -113,6 +114,7 @@ const Leaderboard = () => {
         <div className="flex items-center justify-between -mt-8">
           <div className="relative">
             <Image
+              className="size-30"
               src={"/images/2nd.png"}
               alt="1st medal"
               width={130}
@@ -128,6 +130,7 @@ const Leaderboard = () => {
 
           <div className="relative">
             <Image
+              className="size-30"
               src={"/images/3rd.png"}
               alt="1st medal"
               width={130}
@@ -147,7 +150,7 @@ const Leaderboard = () => {
         {leaderboardList.slice(3)?.map((user, index) => (
           <div
             key={index}
-            className="flex  text-jetblack-25 justify-between items-center w-full font-medium text-base/4.5 px-5 py-3 rounded-lg outline-1 outline-blue-slate"
+            className="flex  text-jetblack-25 justify-between items-center w-full font-medium text-base/4.5 px-5 py-3 sm:py-2 rounded-lg outline-1 outline-blue-slate"
           >
             <span className="">{user?.rank}</span>
             <span className=" ml-4 mr-auto">{user?.name}</span>
