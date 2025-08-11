@@ -62,7 +62,7 @@ const Leaderboard = () => {
 
   return (
     <div
-      className={`h-svh pt-16 pb-7  flex flex-col justify-between  items-center px-6`}
+      className={`h-svh pt-16 pb-7  flex flex-col justify-between  items-center px-6 max-w-md mx-auto`}
     >
       <Header />
 
