@@ -116,7 +116,8 @@ const Quiz = () => {
           givenAns: data?.user_answer,
           correctAns: data.correct_option_value,
           isCorrect: data.is_correct,
-          time: Math.floor(Math.random() * (30 - 3 + 1)) + 3,
+          // time: Math.floor(Math.random() * (30 - 3 + 1)) + 3,
+          time:30-seconds
         },
       ]);
     } catch (err) {
