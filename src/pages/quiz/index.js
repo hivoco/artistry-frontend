@@ -235,7 +235,7 @@ const Quiz = () => {
       // }}
       className={`relative w-full h-svh  max-w-md mx-auto ${
         quizData[currentQuestionIndex]?.question_id === 8
-          ? "sm:h-full"
+          ? "sm:h-full sm:min-h-svh"
           : "h-svh"
       } `}
     >

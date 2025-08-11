@@ -15,13 +15,13 @@ const Criteria = () => {
   const router = useRouter();
   useEffect(() => {
     if (router.isReady) {
-      const { correctAnsNum, name, session_id } = router.query;
+      const { correctAnsNum, name, session } = router.query;
       const result = Number(correctAnsNum) * 10;
       setPercent(result);
       setPassed(result >= 60 ? true : false);
       setLoading(false);
       setUserID(name || "");
-      setSessionID(session_id || "");
+      setSessionID(session || "");
     }
   }, [router.isReady]);
 
@@ -89,7 +89,7 @@ const Criteria = () => {
 
         <div className="flex flex-col gap-3.5 items-center ">
           <h2 className="font-semibold text-[28px]/8 text-steel-navy  ">
-            {passed ? "Congratulations!!" : "Oops!!"}
+            {passed ? "Congratulations!!" : "Almost there"}
           </h2>
 
           <p
@@ -99,7 +99,7 @@ const Criteria = () => {
           >
             {passed
               ? "You passed, You are eligible for your Achievement Certificate."
-              : `Almost there, You didn’t meet the passing criteria this time. Would you like to try again?`}
+              : `You didn’t meet the passing criteria this time. Would you like to try again?`}
           </p>
         </div>
 
