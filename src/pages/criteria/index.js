@@ -18,7 +18,7 @@ const Criteria = () => {
       const { correctAnsNum, name, session } = router.query;
       const result = Number(correctAnsNum) * 10;
       setPercent(result);
-      setPassed(result >= 60 ? true : false);
+      setPassed(result >= 80 ? true : false);
       setLoading(false);
       setUserID(name || "");
       setSessionID(session || "");

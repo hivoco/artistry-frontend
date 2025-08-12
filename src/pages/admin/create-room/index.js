@@ -18,7 +18,9 @@ const RoomCreator = () => {
     }
 
     setIsLoading(true);
-    fetch(`https://api.amway.thefirstimpression.ai/api/is_session_exit?name=${name}`)
+    fetch(
+      `https://api.amway.thefirstimpression.ai/api/is_session_exit?name=${name}`
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -80,7 +82,7 @@ const RoomCreator = () => {
     if (!isRoomExists && roomName.trim()) {
       const formattedRoomName = roomName.trim().replace(/\s+/g, "-");
       const newRoomUrl = `${window.location.protocol}//${window.location.host}?session=${formattedRoomName}`;
-      
+
       setRoomUrl(newRoomUrl);
       setSessionCreated(true);
 
@@ -213,7 +215,7 @@ const RoomCreator = () => {
               <div className="flex items-center justify-center mb-2">
                 <CircleCheck size={20} className="text-dark-green" />
                 <p className="text-dark-green font-medium ml-1">
-                   session created successfully!
+                  session created successfully!
                 </p>
               </div>
               <div className="flex items-center justify-between bg-white border border-dark-green/30 rounded-full p-3">
