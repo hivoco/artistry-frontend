@@ -104,9 +104,7 @@ const Leaderboard = () => {
             priority={true}
           />
 
-          <h3
-            className={`${Chloe.className} font-normal text-lg text-center `}
-          >
+          <h3 className={`${Chloe.className} font-normal text-lg text-center `}>
             {leaderboardList[0]?.name || "null"}
           </h3>
         </div>
