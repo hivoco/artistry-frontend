@@ -158,7 +158,7 @@ const Leaderboard = () => {
       </div>
 
       <button
-        onClick={() => window.open("/pdf/certificate.pdf", "_blank")}
+        onClick={() => window.open("/pdf/user-certificate.pdf", "_blank")}
         className="mt-2 w-full  bg-blue-slate  text-white font-bold text-lg/5.5  py-3 text-center rounded-lg outline-1 outline-white hover:bg-[#3a6176] transition"
       >
         Download Your Certificate
