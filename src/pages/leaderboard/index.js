@@ -93,10 +93,10 @@ const Leaderboard = () => {
       </div>
 
       {/* medals */}
-      <div className="flex flex-col w-full">
-        <div className="relative flex justify-center">
+      <div className="flex flex-col  w-full mt-2">
+        <div className="relative flex flex-col items-center ">
           <Image
-            className="size-30"
+            className="w-27.5"
             src={"/images/1st.png"}
             alt="1st medal"
             width={130}
@@ -105,16 +105,16 @@ const Leaderboard = () => {
           />
 
           <h3
-            className={`${Chloe.className} absolute bottom-0 left-1/2 -translate-x-1/2 font-normal text-lg text-center text-jetblack-25`}
+            className={`${Chloe.className} font-normal text-lg text-center `}
           >
             {leaderboardList[0]?.name || "null"}
           </h3>
         </div>
 
-        <div className="flex items-center justify-between -mt-8">
+        <div className="flex items-center justify-between -mt-1 px-5">
           <div className="relative">
             <Image
-              className="size-30"
+              className="w-22.5"
               src={"/images/2nd.png"}
               alt="1st medal"
               width={130}
@@ -122,15 +122,15 @@ const Leaderboard = () => {
             />
 
             <h3
-              className={`${Chloe.className} absolute bottom-0 left-1/2 -translate-x-1/2 font-normal text-lg text-center text-jetblack-25`}
+              className={`${Chloe.className} font-normal text-lg text-center`}
             >
               {leaderboardList[1]?.name || "null"}
             </h3>
           </div>
 
-          <div className="relative">
+          <div className="relative ">
             <Image
-              className="size-30"
+              className="w-21"
               src={"/images/3rd.png"}
               alt="1st medal"
               width={130}
@@ -138,7 +138,7 @@ const Leaderboard = () => {
             />
 
             <h3
-              className={`${Chloe.className} absolute bottom-0 left-1/2 -translate-x-1/2 font-normal text-lg text-center text-jetblack-25`}
+              className={`${Chloe.className}  font-normal text-lg text-center`}
             >
               {leaderboardList[2]?.name || "null"}
             </h3>
@@ -150,7 +150,7 @@ const Leaderboard = () => {
         {leaderboardList.slice(3)?.map((user, index) => (
           <div
             key={index}
-            className="flex  text-jetblack-25 justify-between items-center w-full font-medium text-base/4.5 px-5 py-3 sm:py-2 rounded-lg outline-1 outline-blue-slate"
+            className="flex  text-[#111111] justify-between items-center w-full font-medium text-base/4.5 px-5 py-3 sm:py-2 rounded-lg outline-1 outline-blue-slate"
           >
             <span className="">{user?.rank}</span>
             <span className=" ml-4 mr-auto">{user?.name}</span>
