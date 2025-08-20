@@ -98,23 +98,36 @@ const Criteria = () => {
             `}
           >
             {passed
-              ? "You passed, You are eligible for your Achievement Certificate."
+                ? "You passed, You are eligible for your Achievement Certificate."
               : `You didn’t meet the passing criteria this time. Would you like to try again?`}
           </p>
         </div>
 
         {passed ? (
-          <div className="w-full flex flex-col gap-2.5 items-center">
-            <p className="font-normal text-xs/4 text-steel-navy text-center">
-              *View the leaderboard to download your certificate.{" "}
-            </p>
+          <>
+            {sessionID ? (
+              <div className={`w-full flex flex-col gap-2.5 items-center`}>
+                <p className="font-normal text-xs/4 text-steel-navy text-center">
+                  *View the leaderboard to download your certificate.{" "}
+                </p>
 
-            <Link className="w-full" href={`/leaderboard?&name=${userID}`}>
-              <button className=" w-full  bg-blue-slate  text-white font-bold text-lg/5.5  py-3 text-center rounded-lg outline-1 outline-white hover:bg-[#3a6176] transition">
-                View Leaderboard{" "}
+                <Link className="w-full" href={`/leaderboard?&name=${userID}`}>
+                  <button className=" w-full  bg-blue-slate  text-white font-bold text-lg/5.5  py-3 text-center rounded-lg outline-1 outline-white hover:bg-[#3a6176] transition">
+                    View Leaderboard{" "}
+                  </button>
+                </Link>
+              </div>
+            ) : (
+              <button
+                onClick={() =>
+                  window.open("/pdf/user-certificate.pdf", "_blank")
+                }
+                className="mt-2 w-full  bg-blue-slate  text-white font-bold text-lg/5.5  py-3 text-center rounded-lg outline-1 outline-white hover:bg-[#3a6176] transition"
+              >
+                Download Your Certificate
               </button>
-            </Link>
-          </div>
+            )}
+          </>
         ) : (
           <div className="w-full flex flex-col gap-3">
             <button
